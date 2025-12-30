@@ -41,7 +41,9 @@ def searchVideoData(name: str, tv_num: str, season: bool):
             d = c().get(name)
             if d:
                 for v in d:
-                    if v.title == name and v.season_number == int(tv_num):
+                    title_match = name in v.title or v.title.startswith(name)
+                    season_match = v.season_number == int(tv_num)
+                    if title_match and season_match:
                         url_list += v.url
         except Exception as e:
             pass
