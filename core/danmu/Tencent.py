@@ -122,16 +122,20 @@ class GetDanmuTencent(GetDanmuBase):
             vid = re.search(r"/([a-zA-Z0-9]+)\.html", url)
             if vid:
                 vid = vid.group(1)
-
-        cid_match = re.findall('"cid":"(.*?)"', res.text)
-        if not cid_match:
-            logger.error("解析cid失败，请检查链接是否正确")
-            return []
-        cid = cid_match[0]
-
         if not vid:
             logger.error("解析vid失败，请检查链接是否正确")
             return []
+        cid = re.findall('"cid":"(.*?)"', res.text)
+        if cid:
+            cid = cid[0]
+        else:
+            cid = re.search(fr"/([a-zA-Z0-9]+)/{vid}", url)
+            if cid:
+                cid = cid.group(1)
+        if not cid:
+            logger.error("解析cid失败，请检查链接是否正确")
+            return []
+
 
         url = 'https://pbaccess.video.qq.com/trpc.universal_backend_service.page_server_rpc.PageServer/GetPageData'
         data = {
