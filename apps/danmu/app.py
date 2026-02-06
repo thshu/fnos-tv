@@ -116,7 +116,7 @@ def get_url_dict(douban_id, title=None, season_number=None, episode_number=None,
             for item in url_list:
                 db.add(guid=guid, url=item, parent_guid=parent_guid)
         url_dict = {
-            episode_number: url_list
+            str(episode_number): url_list
         }
     return url_dict
 
@@ -167,7 +167,7 @@ def get_danmu():
             # 处理结果
             for result in results:
                 if result["data"] is not None:
-                    k = result["key"]
+                    k = str(result["key"])
                     if k not in all_danmu_data.keys():
                         all_danmu_data[k] = []
                     all_danmu_data[k] += result["data"].list
